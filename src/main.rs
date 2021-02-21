@@ -18,7 +18,7 @@ const DB_HOST: &str = "http://localhost:5984";
 const TEST_DB: &str = "test_db";
 
 fn fetch_data() -> Vec<&'static str> {
-    vec!["test", "test2"]
+    vec!["hello", "world"]
 }
 
 #[tokio::main]
@@ -53,7 +53,7 @@ async fn main() -> Result<(), Box<dyn Error>> {
         warp::reply::json(&our_ids)
     });
 
-    println!("Attempting to listen on http://127.0.0.1:3030/");
+    println!("Attempting to listen on http://127.0.0.1:65432/");
 
     warp::serve(routes).run(([127, 0, 0, 1], 65432)).await;
     Ok(())
