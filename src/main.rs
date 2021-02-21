@@ -1,6 +1,12 @@
+extern crate dotenv;
+
+#[macro_use]
+extern crate dotenv_codegen;
+
 use chrono::{DateTime, NaiveDateTime, TimeZone, Utc};
 use couch_rs::document::DocumentCollection;
 use couch_rs::types::find::FindQuery;
+use dotenv::dotenv;
 use serde_json::json;
 use serde_json::Value;
 use std::env;
@@ -22,7 +28,9 @@ async fn main() -> Result<(), Box<dyn Error>> {
     let b = 1 + 2;
     assert_eq!(a, b);
 
-    let client = couch_rs::Client::new(DB_HOST, "admin", "password")?;
+    dotenv().ok();
+
+    let client = couch_rs::Client::new(DB_HOST, "admin", dotenv!("COUCHDB_PASSWORD"))?;
     let db = client.db(TEST_DB).await?;
     let find_all = FindQuery::find_all();
     let docs = db.find_raw(&find_all).await?;
