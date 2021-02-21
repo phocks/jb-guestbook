@@ -23,6 +23,10 @@ fn fetch_data() -> Vec<&'static str> {
 
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn Error>> {
+    let cors = warp::cors()
+        .allow_origin("*")
+        .allow_methods(vec!["GET", "POST", "DELETE"]);
+
     // Just a test
     let a = 3;
     let b = 1 + 2;
@@ -47,11 +51,13 @@ async fn main() -> Result<(), Box<dyn Error>> {
     // });
 
     // Match any request and return hello world!
-    let routes = warp::any().map(move || {
-        let our_ids = fetch_data();
-        // let our_ids = docs.get_data();
-        warp::reply::json(&our_ids)
-    });
+    let routes = warp::any()
+        .map(move || {
+            let our_ids = fetch_data();
+            // let our_ids = docs.get_data();
+            warp::reply::json(&our_ids)
+        })
+        .with(cors);
 
     println!("Attempting to listen on http://127.0.0.1:65000/");
 
