@@ -24,8 +24,16 @@ fn fetch_data() -> Vec<&'static str> {
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn Error>> {
     let cors = warp::cors()
-        .allow_origin("*")
-        .allow_methods(vec!["GET", "POST", "DELETE"]);
+        .allow_any_origin()
+        .allow_headers(vec![
+            "User-Agent",
+            "Sec-Fetch-Mode",
+            "Referer",
+            "Origin",
+            "Access-Control-Request-Method",
+            "Access-Control-Request-Headers",
+        ])
+        .allow_methods(vec!["POST", "GET"]);
 
     // Just a test
     let a = 3;
