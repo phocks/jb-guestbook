@@ -55,7 +55,7 @@ async fn main() -> Result<(), Box<dyn Error>> {
 
     println!("Attempting to listen on http://127.0.0.1:65432/");
 
-    warp::serve(routes).run(([127, 0, 0, 1], 65432)).await;
+    warp::serve(routes).run(([0, 0, 0, 0], 65432)).await;
     Ok(())
 }
 
