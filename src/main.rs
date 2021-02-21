@@ -28,7 +28,9 @@ async fn main() -> Result<(), Box<dyn Error>> {
     let b = 1 + 2;
     assert_eq!(a, b);
 
+    // Don't panic???
     dotenv().ok();
+    dotenv().expect(".env file not found");
 
     let client = couch_rs::Client::new(DB_HOST, "admin", dotenv!("COUCHDB_PASSWORD"))?;
     let db = client.db(TEST_DB).await?;
@@ -53,7 +55,7 @@ async fn main() -> Result<(), Box<dyn Error>> {
 
     println!("Attempting to listen on http://127.0.0.1:3030/");
 
-    warp::serve(routes).run(([127, 0, 0, 1], 3030)).await;
+    warp::serve(routes).run(([127, 0, 0, 1], 65432)).await;
     Ok(())
 }
 
